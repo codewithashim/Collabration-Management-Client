@@ -5,15 +5,15 @@
 @tailwind utilities;
 
 @layer base {
-    .container {
-      @apply mx-auto;
-      max-width: 1440px;
-  
-      @screen sm {
-        max-width: 720px;
-      }
+  .container {
+    @apply mx-auto;
+    max-width: 1440px;
+
+    @screen sm {
+      max-width: 720px;
     }
   }
+}
 
 @layer components {
   .btn {

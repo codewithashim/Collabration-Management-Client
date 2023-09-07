@@ -1,9 +1,10 @@
 import { Outlet } from "react-router-dom";
+import Navbar from "../Shared/Navbar/Navbar";
 
 const MainLayouts = () => {
   return (
-    <section>
-      <h1>Header</h1>
+    <section className="container">
+      <Navbar />
       <Outlet />
     </section>
   );
