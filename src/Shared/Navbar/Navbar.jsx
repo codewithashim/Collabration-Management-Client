@@ -60,7 +60,7 @@ const Navbar = () => {
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="avatar cursor-pointer">
                 <div className="w-10 rounded-full cursor-pointer">
-                  <img src={user.photoURL} />
+                  <img src={user?.photoURL} />
                 </div>
               </label>
               <ul

@@ -5,6 +5,7 @@ import Login from "../Pages/Auth/Login/Login";
 import Signup from "../Pages/Auth/Signup/Signup";
 import DashboardLayout from "../Layout/DashboardLayout";
 import PrivetRouter from "./PrivetRouter";
+import AddTask from "../Pages/Dashboard/AddTask/AddTask";
 
 const routes = createBrowserRouter([
   {
@@ -26,6 +27,14 @@ const routes = createBrowserRouter([
         element: (
           <PrivetRouter>
             <Home />
+          </PrivetRouter>
+        ),
+      },
+      {
+        path: "/dashboard/add-task",
+        element: (
+          <PrivetRouter>
+            <AddTask />
           </PrivetRouter>
         ),
       },

@@ -5,6 +5,8 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 // import axios from "axios";
 import { AuthContext } from "../../../Context/UserContext";
+import axios from "axios";
+import { signupUrl } from "../../../Utils/Urls/SignupUrl";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -47,35 +49,36 @@ const Signup = () => {
           displayName: fullName,
           role: role,
         };
-        updateUserDetails(profileInfo);
-        router("/login");
-        //   .then(async () => {
-        //     try {
-        //       await axios
-        //         .post(`${baseUrl}/api/user`, {
-        //           fullName: fullName,
-        //           role: role,
-        //           email: email,
-        //         })
-        //         .then((response) => {
-        //           console.log(response.data);
-        //         })
-        //         .catch((error) => {
-        //           console.log("error", error);
-        //         });
-        //     } catch (error) {
-        //       console.log("error", error);
-        //       Swal.fire({
-        //         icon: "error",
-        //         title: "Oops...",
-        //         confirmButtonColor: "#ED1C24",
-        //         text: error.message,
-        //       });
-        //     }
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //   });
+        updateUserDetails(profileInfo)
+          .then(async () => {
+            try {
+              await axios
+                .post(signupUrl, {
+                  name: user?.displayName,
+                  role: role,
+                  email: user?.email,
+                  photo: user?.photoURL,
+                })
+                .then((response) => {
+                  console.log(response.data);
+                  router("/login");
+                })
+                .catch((error) => {
+                  console.log("error", error);
+                });
+            } catch (error) {
+              console.log("error", error);
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                confirmButtonColor: "#ED1C24",
+                text: error.message,
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         const errorCode = error.code;
