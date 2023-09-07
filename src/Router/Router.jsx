@@ -1,20 +1,37 @@
 import { createBrowserRouter } from "react-router-dom";
-import MainLayouts from "../Layout/MainLayouts";
-import Home from "../Pages/Home/Home";
+import AuthLayouts from "../Layout/AuthLayout";
+import Home from "../Pages/Dashboard/Home/Home";
 import Login from "../Pages/Auth/Login/Login";
 import Signup from "../Pages/Auth/Signup/Signup";
+import DashboardLayout from "../Layout/DashboardLayout";
+import PrivetRouter from "./PrivetRouter";
 
 const routes = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayouts />,
+    element: <AuthLayouts />,
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: <Login />,
       },
     ],
   },
+  {
+    path: "/dashboard",
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "/dashboard",
+        element: (
+          <PrivetRouter>
+            <Home />
+          </PrivetRouter>
+        ),
+      },
+    ],
+  },
+
   {
     path: "/login",
     element: <Login />,

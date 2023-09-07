@@ -43,7 +43,7 @@ const Login = () => {
           if (redirect) {
             router(`/${redirect}`);
           } else {
-            router("/");
+            router("/dashboard");
           }
         })
         .catch((err) => {

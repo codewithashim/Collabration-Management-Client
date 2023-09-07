@@ -8,6 +8,8 @@ const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
   const router = useNavigate();
 
+  console.log(user, "user++");
+
   const handleLogout = () => {
     logOut()
       .then(() => {
@@ -53,18 +55,23 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="flex-none gap-2">
-        {user ? (
+        {user?.email ? (
           <>
             <div className="dropdown dropdown-end">
-              <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-                <div className="w-10 rounded-full">
-                  <img src={user.photoUrl} />
+              <label tabIndex={0} className="avatar cursor-pointer">
+                <div className="w-10 rounded-full cursor-pointer">
+                  <img src={user.photoURL} />
                 </div>
               </label>
               <ul
                 tabIndex={0}
                 className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
               >
+              <li>
+                <h1>{user?.displayName}</h1>
+                <p>{user?.email}</p>
+              </li>
+                <hr />
                 <li>
                   <Link to="/dashboard" className="justify-between">
                     Dashboard
@@ -86,8 +93,8 @@ const Navbar = () => {
         ) : (
           <>
             <div className="dropdown dropdown-end">
-              <Link to={"/login"} className="common-btn">
-                Login
+              <Link to={"/signup"} className="common-btn">
+                Signup 
               </Link>
             </div>
           </>
