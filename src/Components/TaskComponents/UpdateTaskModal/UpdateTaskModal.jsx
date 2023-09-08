@@ -8,7 +8,7 @@ import useTask from "../../../Hooks/useTask";
 const UpdateTaskModal = ({ taskUpdateOpen, setTaskUpdateOpen, taskData }) => {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
-  const {refetchTasks} = useTask()
+  const { refetchTasks } = useTask();
 
   const statusOption = [
     {
@@ -25,7 +25,7 @@ const UpdateTaskModal = ({ taskUpdateOpen, setTaskUpdateOpen, taskData }) => {
     },
   ];
 
-// const statusOption = ["pending", "progress", "completed"];
+  // const statusOption = ["pending", "progress", "completed"];
 
   const handelStatus = (value) => {
     console.log(value);
@@ -67,7 +67,7 @@ const UpdateTaskModal = ({ taskUpdateOpen, setTaskUpdateOpen, taskData }) => {
 
       setLoading(false);
       setTaskUpdateOpen(false);
-      refetchTasks()
+      refetchTasks();
     }
   };
 

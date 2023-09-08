@@ -18,6 +18,7 @@ const Signup = () => {
   const { register, handleSubmit } = useForm();
   const [imageFile, setImageFile] = useState(null);
   const router = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const passwordVisible = () => {
     setShowPassword(showPassword ? false : true);
@@ -30,6 +31,7 @@ const Signup = () => {
     ///////////////////////////////////////////////
     //               Photo Upload               //
     /////////////////////////////////////////////*/
+    setLoading(true);
     const imageUploadData = new FormData();
     imageUploadData.append("file", imageFile);
     imageUploadData.append(
@@ -66,7 +68,7 @@ const Signup = () => {
 
     if (responseData) {
       console.log(response?.data);
-      router("/");
+      router("/login");
       if (responseData) {
         Swal.fire({
           position: "top-end",
@@ -84,6 +86,7 @@ const Signup = () => {
           showConfirmButton: false,
           timer: 3500,
         });
+        setLoading(false);
       } else {
         Swal.fire({
           icon: "error",
@@ -98,7 +101,7 @@ const Signup = () => {
   return (
     <section className="container">
       <div className="bg-white md:px-16 my-[2rem] w-[80%] mx-auto p-4">
-        <div className=" flex flex-col gap-4">
+        <div className="flex flex-col gap-4 ">
           <div className="xxs:px-[25px] xs:px-[30px] sm:px-[30px] md:px-[30px] lg:px-[28px] xl:px-[40px] py-10  bg-[#f7f7f7] shadow-md rounded-lg">
             <h4 className="xs:text-2xl xxs:text-md sm:text-3xl md:text-3xl">
               Account details
@@ -180,17 +183,19 @@ const Signup = () => {
                 />
               </div>
 
-              <div className="flex justify-center items-center md:flex-row flex-col my-6 gap-4">
-                <div className="flex items-center  sm:col-span-6 xxs:col-span-12 sm:justify-start xxs:justify-center">
+              <div className="flex flex-col items-center justify-center gap-4 my-6 md:flex-row">
+                <div className="flex items-center sm:col-span-6 xxs:col-span-12 sm:justify-start xxs:justify-center">
                   <p className="text-base text-normal">
                     Have already an account?{" "}
                     <Link to="/login">
-                      <b className="text-red-10 text-blue-500">Login here</b>
+                      <b className="text-blue-500 text-red-10">Login here</b>
                     </Link>
                   </p>
                 </div>
                 <div className="flex sm:col-span-6 xxs:col-span-12 md:justify-end xxs:justify-center">
-                  <button className="uppercase common-btn">Sign Up</button>
+                  <button className="uppercase common-btn">
+                    {loading ? "Loading..." : "Signup"}
+                  </button>
                 </div>
               </div>
             </form>

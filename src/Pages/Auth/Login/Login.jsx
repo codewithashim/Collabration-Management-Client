@@ -11,6 +11,7 @@ const Login = () => {
   const passwordVisible = () => {
     setShowPassword(showPassword ? false : true);
   };
+  const [loading, setLoading] = useState(false);
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -60,6 +61,7 @@ const Login = () => {
   const onSubmit = async (data) => {
     const { email, password } = data;
     try {
+      setLoading(true);
       const response = await fetch(loginUrl, {
         method: "POST",
         headers: {
@@ -70,7 +72,6 @@ const Login = () => {
           password,
         }),
       });
-
 
       if (response.ok) {
         const responseData = await response.json();
@@ -94,11 +95,13 @@ const Login = () => {
         });
 
         localStorage.setItem("accessToken", responseData.data.accessToken);
+
         if (redirect) {
           router(`/${redirect}`);
         } else {
-          router("/dashboard");
+           window.location.href = "/dashboard";
         }
+        setLoading(false);
       } else {
         throw new Error("Login request failed");
       }
@@ -119,13 +122,15 @@ const Login = () => {
         showConfirmButton: false,
         timer: 3500,
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <section className="container">
       <div className="bg-white md:px-16 my-[2rem] md:w-[60%] mx-auto p-4">
-        <div className=" flex flex-col gap-4">
+        <div className="flex flex-col gap-4 ">
           <div className="xxs:px-[25px] xs:px-[30px] sm:px-[30px] md:px-[30px] lg:px-[28px] xl:px-[40px] py-10  bg-[#f7f7f7] shadow-md rounded-lg">
             <h4 className="xs:text-2xl xxs:text-md sm:text-3xl md:text-3xl">
               Account details
@@ -160,17 +165,19 @@ const Login = () => {
                 </span>
               </div>
 
-              <div className="flex justify-center items-center md:flex-row flex-col my-6 gap-4">
-                <div className="flex items-center  sm:col-span-6 xxs:col-span-12 sm:justify-start xxs:justify-center">
+              <div className="flex flex-col items-center justify-center gap-4 my-6 md:flex-row">
+                <div className="flex items-center sm:col-span-6 xxs:col-span-12 sm:justify-start xxs:justify-center">
                   <p className="text-base text-normal">
                     Dont Have Account?{" "}
                     <Link to="/signup">
-                      <b className="text-red-10 text-blue-500">Signup here</b>
+                      <b className="text-blue-500 text-red-10">Signup here</b>
                     </Link>
                   </p>
                 </div>
                 <div className="flex sm:col-span-6 xxs:col-span-12 md:justify-end xxs:justify-center">
-                  <button className="uppercase common-btn">Sign In</button>
+                  <button className="uppercase common-btn">
+                    {loading ? "Loading..." : "Login"}
+                  </button>
                 </div>
               </div>
             </form>

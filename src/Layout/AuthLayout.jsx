@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../Shared/Navbar/Navbar";
 
-const MainLayouts = () => {
+const AuthLayouts = () => {
   return (
     <section className="container">
       <Navbar />
@@ -10,4 +10,4 @@ const MainLayouts = () => {
   );
 };
 
-export default MainLayouts;
+export default AuthLayouts;

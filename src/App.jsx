@@ -1,10 +1,49 @@
+// import { RouterProvider } from "react-router-dom";
+// import routes from "./Router/Router";
+
+// const App = () => {
+//   return (
+//     <main>
+//       <RouterProvider router={routes} />
+//     </main>
+//   );
+// };
+
+// export default App;
+
+import React, { useState } from "react";
 import { RouterProvider } from "react-router-dom";
 import routes from "./Router/Router";
+import DashboardLayout from "./Layout/DashboardLayout";
+import AuthLayouts from "./Layout/AuthLayout";
 
 const App = () => {
+  const isAuthenticated = () => {
+    if (localStorage.getItem("accessToken")) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const handleLogin = () => {
+    isAuthenticated();
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    isAuthenticated();
+  };
+
   return (
     <main>
-      <RouterProvider router={routes} />
+      <RouterProvider router={routes}>
+        {isAuthenticated() ? (
+          <DashboardLayout onLogout={handleLogout} />
+        ) : (
+          <AuthLayouts onLogin={handleLogin} />
+        )}
+      </RouterProvider>
     </main>
   );
 };

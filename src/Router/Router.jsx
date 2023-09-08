@@ -11,6 +11,7 @@ import UserDetails from "../Components/UserComponents/UserDetails/UserDetails";
 import Team from "../Pages/Dashboard/Team/Team/Team";
 import TeamDetails from "../Components/TeamComponents/TeamDetails/TeamDetails";
 import TaskDetails from "../Components/TaskComponents/TaskDetails/TaskDetails";
+import MainHomePage from "../Pages/MainHomePage/MainHomePage";
 
 const routes = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const routes = createBrowserRouter([
     children: [
       {
         path: "/",
+        element: <MainHomePage />,
+      },
+      {
+        path: "/login",
         element: <Login />,
       },
       {

@@ -2,15 +2,17 @@
 import { Input, Modal, Select } from "antd";
 import useUsers from "../../../Hooks/useUsers";
 import { useState } from "react";
-import { inviteUserToTeam } from "../../../Utils/Urls/TeamUrls";
 import Swal from "sweetalert2";
-import useTeam from "../../../Hooks/useTeam";
 
-const InviteUserModal = ({ inviteUser, setInviteUser, teamData }) => {
+const InviteUserModal = ({
+  inviteUser,
+  setInviteUser,
+  teamData,
+  refetchTeamData,
+}) => {
   const { usersData } = useUsers();
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState([]);
-  const { refetch } = useTeam();
 
   console.log(teamData, "teamId");
 
@@ -54,7 +56,7 @@ const InviteUserModal = ({ inviteUser, setInviteUser, teamData }) => {
       Swal.fire({
         position: "top-end",
         timerProgressBar: true,
-        title: "Successfully Team Created !",
+        title: "Successfully Invited !",
         iconColor: "#ED1C24",
         toast: true,
         icon: "success",
@@ -70,7 +72,7 @@ const InviteUserModal = ({ inviteUser, setInviteUser, teamData }) => {
 
       setLoading(false);
       setInviteUser(false);
-      refetch();
+      refetchTeamData();
     }
   };
 
