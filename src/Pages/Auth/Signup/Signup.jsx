@@ -1,17 +1,22 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 // import axios from "axios";
-import { AuthContext } from "../../../Context/UserContext";
 import axios from "axios";
 import { signupUrl } from "../../../Utils/Urls/SignupUrl";
+
+const upload_preset = "Codewithashim";
+const cloud_name = "codewithashim";
+const cloud_api = "https://api.cloudinary.com/v1_1/codewithashim/image/upload";
+const cloud_folder = "Codewithashim";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showCPassword, setShowCPassword] = useState(false);
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit } = useForm();
+  const [imageFile, setImageFile] = useState(null);
   const router = useNavigate();
 
   const passwordVisible = () => {
@@ -20,15 +25,49 @@ const Signup = () => {
   const cPasswordVisible = () => {
     setShowCPassword(showCPassword ? false : true);
   };
-  const { signUp, updateUserDetails, loading } = useContext(AuthContext);
 
   const signUpHandler = async (dataValue) => {
+    ///////////////////////////////////////////////
+    //               Photo Upload               //
+    /////////////////////////////////////////////*/
+    const imageUploadData = new FormData();
+    imageUploadData.append("file", imageFile);
+    imageUploadData.append(
+      "public_id",
+      `${cloud_folder}/Profile/${imageFile.name}`
+    );
+    imageUploadData.append("upload_preset", `${upload_preset}`);
+    imageUploadData.append("cloud_name", `${cloud_name}`);
+    const imgRes = await fetch(`${cloud_api}`, {
+      method: "POST",
+      body: imageUploadData,
+    });
+    const imgdata = await imgRes.json();
+    const imgurl = imgdata?.secure_url;
+    console.log(imgurl, "Upload Image ++++");
+
+    ///////     End of Photo Upload     ////////
+
     const role = "user";
-    const { fullName, email, password, profilePicture } = dataValue;
-    await signUp(email, password, profilePicture)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user, "user info");
+    const { fullName, bio, email, password, username } = dataValue;
+    const response = await axios.post(signupUrl, {
+      email: email,
+      role: role,
+      password: password,
+      name: fullName,
+      username: username,
+      bio: bio,
+      profilePicture: imgurl,
+    });
+
+    const responseData = await response?.data;
+
+    console.log(responseData, "response data");
+
+    if (responseData) {
+      console.log(response?.data);
+      router("/");
+      if (responseData) {
         Swal.fire({
           position: "top-end",
           timerProgressBar: true,
@@ -45,52 +84,15 @@ const Signup = () => {
           showConfirmButton: false,
           timer: 3500,
         });
-        const profileInfo = {
-          displayName: fullName,
-          role: role,
-        };
-        updateUserDetails(profileInfo)
-          .then(async () => {
-            try {
-              await axios
-                .post(signupUrl, {
-                  name: user?.displayName,
-                  role: role,
-                  email: user?.email,
-                  photo: user?.photoURL,
-                })
-                .then((response) => {
-                  console.log(response.data);
-                  router("/login");
-                })
-                .catch((error) => {
-                  console.log("error", error);
-                });
-            } catch (error) {
-              console.log("error", error);
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                confirmButtonColor: "#ED1C24",
-                text: error.message,
-              });
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+      } else {
         Swal.fire({
           icon: "error",
-          title: errorMessage,
-          text: "User already registered!",
+          title: "Oops...",
           confirmButtonColor: "#ED1C24",
+          text: "Something went wrong!",
         });
-      });
+      }
+    }
   };
 
   return (
@@ -112,6 +114,20 @@ const Signup = () => {
                   placeholder="Full name"
                   className="text-[15px] font-[500] shadow-md rounded-lg px-2.5 py-4 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   {...register("fullName")}
+                />
+                <input
+                  type="text"
+                  name="username"
+                  placeholder="Username"
+                  className="text-[15px] font-[500] shadow-md rounded-lg px-2.5 py-4 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  {...register("username")}
+                />
+                <input
+                  type="text"
+                  name="bio"
+                  placeholder="Bio"
+                  className="text-[15px] font-[500] shadow-md rounded-lg px-2.5 py-4 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  {...register("bio")}
                 />
                 <input
                   type="email"
@@ -160,10 +176,7 @@ const Signup = () => {
                   accept="image/*"
                   name="profilePicture"
                   className="text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md px-2.5 py-4 border-2 border-gray-300"
-                  onChange={(e) => {
-                    const selectedFile = e.target.files[0];
-                    setValue("profilePicture", selectedFile);
-                  }}
+                  onChange={(e) => setImageFile(e.target.files[0])}
                 />
               </div>
 
@@ -177,9 +190,7 @@ const Signup = () => {
                   </p>
                 </div>
                 <div className="flex sm:col-span-6 xxs:col-span-12 md:justify-end xxs:justify-center">
-                  <button className="uppercase common-btn">
-                    {loading ? "Loading..." : "Sign Up"}
-                  </button>
+                  <button className="uppercase common-btn">Sign Up</button>
                 </div>
               </div>
             </form>

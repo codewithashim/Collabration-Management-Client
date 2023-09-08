@@ -29,10 +29,25 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
+// .common-btn {
+//   @apply bg-blue-500 text-white font-bold px-8 py-3 rounded transition duration-500 ease-in-out;
+
+//   &:hover {
+//     @apply bg-blue-700 text-white font-bold rounded;
+//   }
+// }
+
 .common-btn {
-  @apply bg-blue-500 text-white font-bold px-8 py-3 rounded transition duration-500 ease-in-out;
+  background: linear-gradient(135deg, #2b59ff 0%, #bb2bff 100%);
+  color: #fff;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease-in-out;
 
   &:hover {
-    @apply bg-blue-700 text-white font-bold rounded;
+    background: linear-gradient(135deg, #2b59ff 0%, #bb2bff 100%);
+    color: #fff;
+    font-weight: 600;
   }
 }

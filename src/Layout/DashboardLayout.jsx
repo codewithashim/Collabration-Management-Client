@@ -1,13 +1,20 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Layout, Menu, Button } from "antd";
-import { Link, Outlet } from "react-router-dom";
-import { FaCalendarAlt, FaPowerOff, FaThLarge } from "react-icons/fa";
+import { Link, Outlet, useNavigation } from "react-router-dom";
+import {
+  FaCalendarAlt,
+  FaPowerOff,
+  FaThLarge,
+  FaUserCircle,
+} from "react-icons/fa";
+import { AuthContext } from "../Context/UserContext";
 const { Sider, Content } = Layout;
 
 const DashboardLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [sideNavVisible, setSideNavVisible] = useState(false);
+  const { logOut } = useContext(AuthContext);
 
   const handleResize = () => {
     setCollapsed(window.innerWidth < 768);
@@ -20,7 +27,7 @@ const DashboardLayout = () => {
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
-    handleResize(); // Call handleResize on component mount
+    handleResize();
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -34,6 +41,16 @@ const DashboardLayout = () => {
     setSideNavVisible(!sideNavVisible);
   };
 
+  const router = useNavigation();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      logOut();
+      router("/");
+    }
+  }, [logOut, router]);
+
   return (
     <Layout className="bg-transparent">
       <style>{`
@@ -42,7 +59,6 @@ const DashboardLayout = () => {
         }
       `}</style>
 
-      {/* Add a condition to render Sider based on sideNavVisible */}
       {sideNavVisible && (
         <Sider
           trigger={null}
@@ -60,14 +76,23 @@ const DashboardLayout = () => {
             <Menu.Item key="1" icon={<FaThLarge />}>
               <Link to="/dashboard">Dashboard</Link>
             </Menu.Item>
-            <Menu.Item key="2" icon={<FaCalendarAlt />}>
-              <Link to="/dashboard/calender">Calendar</Link>
+            <Menu.Item key="2" icon={<FaUserCircle />}>
+              <Link to="/dashboard/users">Users</Link>
             </Menu.Item>
 
-            <Menu.Item key="12" icon={<FaPowerOff />}>
+            <Menu.Item key="3" icon={<FaCalendarAlt />}>
+              <Link to="/dashboard/add-task">Add task</Link>
+            </Menu.Item>
+
+            <Menu.Item key="4" icon={<FaUserCircle />}>
+              <Link to="/dashboard/team">Team</Link>
+            </Menu.Item>
+
+            <Menu.Item key="4" icon={<FaPowerOff />}>
               <Link
                 onClick={() => {
                   localStorage.clear();
+                  () => logOut();
                 }}
                 to="/"
               >

@@ -60,17 +60,17 @@ const Navbar = () => {
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="avatar cursor-pointer">
                 <div className="w-10 rounded-full cursor-pointer">
-                  <img src={user?.photoURL} />
+                  <img src={user?.profilePicture} />
                 </div>
               </label>
               <ul
                 tabIndex={0}
                 className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
               >
-              <li>
-                <h1>{user?.displayName}</h1>
-                <p>{user?.email}</p>
-              </li>
+                <li>
+                  <h1>{user?.name}</h1>
+                  <p>{user?.email}</p>
+                </li>
                 <hr />
                 <li>
                   <Link to="/dashboard" className="justify-between">
@@ -94,7 +94,7 @@ const Navbar = () => {
           <>
             <div className="dropdown dropdown-end">
               <Link to={"/signup"} className="common-btn">
-                Signup 
+                Signup
               </Link>
             </div>
           </>

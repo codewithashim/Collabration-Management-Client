@@ -1,9 +1,9 @@
-import { useContext, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../../Context/UserContext";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import Swal from "sweetalert2";
+import { loginUrl, refreshTokenUrl } from "../../../Utils/Urls/SignupUrl";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,62 +11,98 @@ const Login = () => {
   const passwordVisible = () => {
     setShowPassword(showPassword ? false : true);
   };
-  const { signIn, loading } = useContext(AuthContext);
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const redirect = queryParams.get("redirect");
   const router = useNavigate();
 
-  const onSubmit = async (data) => {
-    try {
-      signIn(data.email, data.password)
-        .then((result) => {
-          const user = result.user;
-          Swal.fire({
-            position: "top-end",
-            timerProgressBar: true,
-            title: "Successfully Login Done !",
-            iconColor: "#ED1C24",
-            toast: true,
-            icon: "success",
-            showClass: {
-              popup: "animate__animated animate__fadeInRight",
-            },
-            hideClass: {
-              popup: "animate__animated animate__fadeOutRight",
-            },
-            showConfirmButton: false,
-            timer: 3500,
-          });
+  const [tokens, setTokens] = useState(null);
 
-          if (redirect) {
-            router(`/${redirect}`);
-          } else {
-            router("/dashboard");
-          }
+  useEffect(() => {
+    if (tokens?.accessToken) {
+      const accessTokenExp = jwtHelper.getTokenExpiration(tokens.accessToken);
+
+      if (accessTokenExp <= Date.now() / 1000) {
+        const refreshToken = tokens.refreshToken;
+
+        fetch(refreshTokenUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            refreshToken,
+          }),
         })
-        .catch((err) => {
-          Swal.fire({
-            position: "top-end",
-            timerProgressBar: true,
-            title: err.message,
-            iconColor: "#ED1C24",
-            toast: true,
-            icon: "error",
-            showClass: {
-              popup: "animate__animated animate__fadeInRight",
-            },
-            hideClass: {
-              popup: "animate__animated animate__fadeOutRight",
-            },
-            showConfirmButton: false,
-            timer: 3500,
-          });
-        });
-    } catch (error) {
-      console.log(error);
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Refresh token request failed");
+            }
+          })
+          .then((responseData) => {
+            setTokens({
+              accessToken: responseData.data.accessToken,
+              refreshToken: refreshToken,
+            });
 
+            localStorage.setItem("accessToken", responseData.data.accessToken);
+          })
+          .catch((error) => {
+            console.error("Refresh token failed", error);
+          });
+      }
+    }
+  }, [tokens]);
+
+  const onSubmit = async (data) => {
+    const { email, password } = data;
+    try {
+      const response = await fetch(loginUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+
+      if (response.ok) {
+        const responseData = await response.json();
+        setTokens(responseData);
+
+        Swal.fire({
+          position: "top-end",
+          timerProgressBar: true,
+          title: "Successfully Login Done !",
+          iconColor: "#ED1C24",
+          toast: true,
+          icon: "success",
+          showClass: {
+            popup: "animate__animated animate__fadeInRight",
+          },
+          hideClass: {
+            popup: "animate__animated animate__fadeOutRight",
+          },
+          showConfirmButton: false,
+          timer: 3500,
+        });
+
+        localStorage.setItem("accessToken", responseData.data.accessToken);
+        if (redirect) {
+          router(`/${redirect}`);
+        } else {
+          router("/dashboard");
+        }
+      } else {
+        throw new Error("Login request failed");
+      }
+    } catch (error) {
       Swal.fire({
         position: "top-end",
         timerProgressBar: true,
@@ -134,9 +170,7 @@ const Login = () => {
                   </p>
                 </div>
                 <div className="flex sm:col-span-6 xxs:col-span-12 md:justify-end xxs:justify-center">
-                  <button className="uppercase common-btn">
-                    {loading ? "Loading..." : "Sign In"}
-                  </button>
+                  <button className="uppercase common-btn">Sign In</button>
                 </div>
               </div>
             </form>

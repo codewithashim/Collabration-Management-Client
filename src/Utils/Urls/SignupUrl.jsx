@@ -1,6 +1,10 @@
 import { baseUrl } from "../Network/Network";
 
-export const signupUrl = baseUrl + "users/create-user";
+export const loginUrl = baseUrl + "auth/login";
+
+export const refreshTokenUrl = baseUrl + "auth/refresh-token";
+
+export const signupUrl = baseUrl + "auth/signup";
 
 export const getAllUser = baseUrl + "users/";
 
