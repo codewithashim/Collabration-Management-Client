@@ -12,7 +12,7 @@ const useUsers = () => {
     queryFn: async () => {
       const res = await fetch(getAllUser);
       const data = await res.json();
-      return data.data;
+      return data?.data;
     },
   });
 

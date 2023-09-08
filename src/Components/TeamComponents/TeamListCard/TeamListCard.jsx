@@ -8,11 +8,11 @@ const TeamListCard = ({ team }) => {
   const navigate = useNavigate();
 
   const handelNavigate = () => {
-    navigate(`/team/${team?._id}`);
+    navigate(`/dashboard/team/${team?._id}`);
   };
 
   return (
-    <section onClick={handelNavigate}>
+    <section onClick={handelNavigate} className="cursor-pointer">
       <Card
         style={{
           width: 300,

@@ -11,7 +11,7 @@ const useTeam = () => {
     queryFn: async () => {
       const res = await fetch(getAllTeamUrl);
       const data = await res.json();
-      return data.data;
+      return data?.data;
     },
   });
 

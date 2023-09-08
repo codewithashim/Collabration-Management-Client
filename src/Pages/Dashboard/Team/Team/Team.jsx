@@ -16,10 +16,12 @@ const Team = () => {
       <div className="divider"></div>
 
       <section className="my-4 flex md:flex-row flex-col justify-between gap-4">
+
         <div className="team-list">
           <h1 className="text-center text-2xl font-bold my-4">Team List</h1>
           <TeamList />
         </div>
+        
         <div className="user-list border w-[20%]">
           <h1 className="text-center text-2xl font-bold my-4">Total Users</h1>
          <UserList />

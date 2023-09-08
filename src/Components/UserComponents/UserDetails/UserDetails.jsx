@@ -16,8 +16,6 @@ const UserDetails = () => {
     },
   });
 
-  console.log(userData);
-
   return (
     <section className="flex justify-center items-center">
       <Card
@@ -27,7 +25,7 @@ const UserDetails = () => {
         cover={<img alt="example" src={userData?.profilePicture} />}
       >
         <Meta
-          avatar={<Avatar src={userData.profilePicture} />}
+          avatar={<Avatar src={userData?.profilePicture} />}
           title={userData?.name}
           description={userData?.bio}
         />

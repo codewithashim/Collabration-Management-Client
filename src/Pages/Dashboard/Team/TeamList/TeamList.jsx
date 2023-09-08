@@ -9,7 +9,6 @@ const TeamList = () => {
       {teamsData?.map((team) => {
         return <TeamListCard key={team?._id} team={team} />;
       })}
-      <TeamListCard />
     </section>
   );
 };
