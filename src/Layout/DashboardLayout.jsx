@@ -81,14 +81,14 @@ const DashboardLayout = () => {
             </Menu.Item>
 
             <Menu.Item key="3" icon={<FaCalendarAlt />}>
-              <Link to="/dashboard/add-task">Add task</Link>
+              <Link to="/dashboard/task">Add task</Link>
             </Menu.Item>
 
             <Menu.Item key="4" icon={<FaUserCircle />}>
               <Link to="/dashboard/team">Team</Link>
             </Menu.Item>
 
-            <Menu.Item key="4" icon={<FaPowerOff />}>
+            <Menu.Item key="5" icon={<FaPowerOff />}>
               <Link
                 onClick={() => {
                   localStorage.clear();

@@ -8,4 +8,4 @@ export const signupUrl = baseUrl + "auth/signup";
 
 export const getAllUser = baseUrl + "users/";
 
-export const getUserById = (id) => baseUrl + `users/id/${id}`;
+export const getUserById = (id) => baseUrl + `users/${id}`;

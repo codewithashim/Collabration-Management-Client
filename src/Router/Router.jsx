@@ -5,9 +5,10 @@ import Login from "../Pages/Auth/Login/Login";
 import Signup from "../Pages/Auth/Signup/Signup";
 import DashboardLayout from "../Layout/DashboardLayout";
 import PrivetRouter from "./PrivetRouter";
-import AddTask from "../Pages/Dashboard/Task/AddTask/AddTask";
-import AddTeam from "../Pages/Dashboard/Team/AddTeam/AddTeam";
+import Task from "../Pages/Dashboard/Task/Task/Task";
 import Users from "../Pages/Dashboard/Users/Users";
+import UserDetails from "../Components/UserComponents/UserDetails/UserDetails";
+import Team from "../Pages/Dashboard/Team/Team/Team";
 
 const routes = createBrowserRouter([
   {
@@ -37,10 +38,10 @@ const routes = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/add-task",
+        path: "/dashboard/task",
         element: (
           <PrivetRouter>
-            <AddTask />
+            <Task />
           </PrivetRouter>
         ),
       },
@@ -48,7 +49,7 @@ const routes = createBrowserRouter([
         path: "/dashboard/team",
         element: (
           <PrivetRouter>
-            <AddTeam />
+            <Team />
           </PrivetRouter>
         ),
       },
@@ -61,14 +62,13 @@ const routes = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/user/:id",
+        path: "/dashboard/user/:userId",
         element: (
           <PrivetRouter>
-            <h1>user</h1>
+            <UserDetails />
           </PrivetRouter>
-        )
-      }
-        
+        ),
+      },
     ],
   },
   {
