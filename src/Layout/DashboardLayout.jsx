@@ -81,7 +81,7 @@ const DashboardLayout = () => {
             </Menu.Item>
 
             <Menu.Item key="3" icon={<FaCalendarAlt />}>
-              <Link to="/dashboard/task">Add task</Link>
+              <Link to="/dashboard/task">Task</Link>
             </Menu.Item>
 
             <Menu.Item key="4" icon={<FaUserCircle />}>

@@ -3,10 +3,13 @@ import { useParams } from "react-router-dom";
 import { getTaskByIdUrl } from "../../../Utils/Urls/TaskUrl";
 import UpdateTaskModal from "../UpdateTaskModal/UpdateTaskModal";
 import { useState } from "react";
+import useTask from "../../../Hooks/useTask";
+import { FaTrash } from "react-icons/fa";
 
 const TaskDetails = () => {
   const { taskId } = useParams();
   const [taskUpdateOpen, setTaskUpdateOpen] = useState(false);
+  const { handelTaskDelete } = useTask();
 
   const { data: taskData } = useQuery({
     queryKey: ["taskData"],
@@ -36,6 +39,9 @@ const TaskDetails = () => {
           <span className="badge badge-primary mx-4">{taskData?.dueDate}</span>
         </div>
         <hr className="my-4" />
+        <h1 className="text-2xl font-bold">
+          <span>Assign To</span>
+        </h1>
         <div className="flex gap-4 flex-col md:flex-row">
           {taskData?.assignTo?.map((member, index) => {
             return (
@@ -58,12 +64,18 @@ const TaskDetails = () => {
 
         <div className="invite-user my-4">
           <hr className="my-4" />
-          <div className="flex justify-center items-center">
+          <div className="flex justify-center items-center gap-4 flex-col md:flex-row">
             <button
               className="common-btn"
               onClick={() => setTaskUpdateOpen(true)}
             >
               Update Status
+            </button>
+            <button
+              onClick={() => handelTaskDelete(taskData?._id)}
+              className="common-btn flex items-center gap-4"
+            >
+              Delete Task <FaTrash />
             </button>
           </div>
         </div>

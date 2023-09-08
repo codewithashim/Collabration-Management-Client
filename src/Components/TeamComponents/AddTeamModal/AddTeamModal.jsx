@@ -9,7 +9,7 @@ const AddTeamModal = ({ open, setOpen }) => {
   const [loading, setLoading] = useState(false);
   const [teamName, setTeamName] = useState("");
   const [teamMember, setTeamMember] = useState([]);
-  const { usersData ,refetchTeams} = useUsers();
+  const { usersData, refetch } = useUsers();
 
   const teamMemberOption = usersData?.map((user) => ({
     value: user?._id,
@@ -52,7 +52,7 @@ const AddTeamModal = ({ open, setOpen }) => {
       });
       setLoading(false);
       setOpen(false);
-      refetchTeams();
+      refetch();
     } else {
       Swal.fire({
         position: "top-end",

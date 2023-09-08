@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AddTaskModal from "../../../../Components/TaskComponents/AddTaskModal/AddTaskModal";
 import useTask from "../../../../Hooks/useTask";
 import { Link } from "react-router-dom";
+import { FaTrash } from "react-icons/fa";
 
 const AddTask = () => {
   const [taskOpen, setTaskOpen] = useState(false);
-  const { tasksData } = useTask();
+  const { tasksData, handelTaskDelete } = useTask();
 
   console.log(tasksData);
 
@@ -46,13 +47,19 @@ const AddTask = () => {
                             {task?.priorityLevel}
                           </span>
                         </div>
-                        <div className="mt-4">
+                        <div className="mt-4 flex justify-center items-center gap-2 flex-col ">
                           <Link
                             to={`/dashboard/task/${task?._id}`}
-                            className="common-btn "
+                            className="common-btn w-full "
                           >
                             Details
                           </Link>
+                          <button
+                            onClick={() => handelTaskDelete(task?._id)}
+                            className="common-btn flex items-center gap-4 w-full"
+                          >
+                            Delete Task <FaTrash />
+                          </button>
                         </div>
                       </div>
 
@@ -102,13 +109,19 @@ const AddTask = () => {
                             {task?.priorityLevel}
                           </span>
                         </div>
-                        <div className="mt-4">
+                        <div className="mt-4 flex justify-center items-center gap-2 flex-col ">
                           <Link
                             to={`/dashboard/task/${task?._id}`}
-                            className="common-btn "
+                            className="common-btn w-full "
                           >
                             Details
                           </Link>
+                          <button
+                            onClick={() => handelTaskDelete(task?._id)}
+                            className="common-btn flex items-center gap-4 w-full"
+                          >
+                            Delete Task <FaTrash />
+                          </button>
                         </div>
                       </div>
 
@@ -158,13 +171,19 @@ const AddTask = () => {
                             {task?.priorityLevel}
                           </span>
                         </div>
-                        <div className="mt-4">
+                        <div className="mt-4 flex justify-center items-center gap-2 flex-col ">
                           <Link
                             to={`/dashboard/task/${task?._id}`}
-                            className="common-btn "
+                            className="common-btn w-full "
                           >
                             Details
                           </Link>
+                          <button
+                            onClick={() => handelTaskDelete(task?._id)}
+                            className="common-btn flex items-center gap-4 w-full"
+                          >
+                            Delete Task <FaTrash />
+                          </button>
                         </div>
                       </div>
 

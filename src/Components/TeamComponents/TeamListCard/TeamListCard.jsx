@@ -2,17 +2,16 @@
 
 import { Avatar, Card } from "antd";
 import Meta from "antd/es/card/Meta";
-import { useNavigate } from "react-router-dom";
+import { FaTrash } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import useTeam from "../../../Hooks/useTeam";
 
 const TeamListCard = ({ team }) => {
-  const navigate = useNavigate();
+  const { handelTeamDelete } = useTeam();
 
-  const handelNavigate = () => {
-    navigate(`/dashboard/team/${team?._id}`);
-  };
 
   return (
-    <section onClick={handelNavigate} className="cursor-pointer">
+    <section className="cursor-pointer">
       <Card
         style={{
           width: 300,
@@ -26,6 +25,17 @@ const TeamListCard = ({ team }) => {
             return <Avatar src={member?.profilePicture} key={member?._id} />;
           })}
         />
+        <div className="my-4 flex flex-col gap-2">
+          <button
+            onClick={() => handelTeamDelete(team?._id)}
+            className="common-btn flex items-center gap-4"
+          >
+            Delete Task <FaTrash />
+          </button>
+          <Link to={`/dashboard/team/${team?._id}`} className="common-btn">
+            View Team
+          </Link>
+        </div>
       </Card>
     </section>
   );
