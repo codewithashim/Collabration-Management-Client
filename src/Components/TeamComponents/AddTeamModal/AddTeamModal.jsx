@@ -4,12 +4,15 @@ import { useState } from "react";
 import useUsers from "../../../Hooks/useUsers";
 import { createTeamUrl } from "../../../Utils/Urls/TeamUrls";
 import Swal from "sweetalert2";
+import useTeam from "../../../Hooks/useTeam";
 
 const AddTeamModal = ({ open, setOpen }) => {
   const [loading, setLoading] = useState(false);
   const [teamName, setTeamName] = useState("");
   const [teamMember, setTeamMember] = useState([]);
-  const { usersData, refetch } = useUsers();
+  const { usersData } = useUsers();
+
+  const { refetch } = useTeam();
 
   const teamMemberOption = usersData?.map((user) => ({
     value: user?._id,

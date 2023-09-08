@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Layout, Menu, Button } from "antd";
-import { Link, Outlet, useNavigation } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import {
   FaCalendarAlt,
   FaPowerOff,
@@ -9,6 +9,7 @@ import {
   FaUserCircle,
 } from "react-icons/fa";
 import { AuthContext } from "../Context/UserContext";
+import Swal from "sweetalert2";
 const { Sider, Content } = Layout;
 
 const DashboardLayout = () => {
@@ -41,7 +42,7 @@ const DashboardLayout = () => {
     setSideNavVisible(!sideNavVisible);
   };
 
-  const router = useNavigation();
+  const router = useLocation();
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -50,6 +51,43 @@ const DashboardLayout = () => {
       router("/");
     }
   }, [logOut, router]);
+
+  const handleLogout = () => {
+    logOut()
+      .then(() => {
+        Swal.fire({
+          position: "top-end",
+          timerProgressBar: true,
+          title: "Successfully Logout Done !",
+          iconColor: "#ED1C24",
+          toast: true,
+          icon: "success",
+          showClass: {
+            popup: "animate__animated animate__fadeInRight",
+          },
+          hideClass: {
+            popup: "animate__animated animate__fadeOutRight",
+          },
+          customClass: {
+            confirmButton: "blue",
+          },
+          showConfirmButton: false,
+          timer: 3500,
+        });
+        localStorage.removeItem("user-uid");
+        router("/");
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        console.log(errorMessage);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something warn!",
+          confirmButtonColor: "#0077b6",
+        });
+      });
+  };
 
   return (
     <Layout className="bg-transparent">
@@ -89,13 +127,7 @@ const DashboardLayout = () => {
             </Menu.Item>
 
             <Menu.Item key="5" icon={<FaPowerOff />}>
-              <Link
-                onClick={() => {
-                  localStorage.clear();
-                  () => logOut();
-                }}
-                to="/"
-              >
+              <Link onClick={() => handleLogout()} to="/">
                 Logout
               </Link>
             </Menu.Item>

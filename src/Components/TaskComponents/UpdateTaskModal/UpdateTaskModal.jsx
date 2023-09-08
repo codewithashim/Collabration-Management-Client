@@ -3,10 +3,12 @@ import { Modal, Select } from "antd";
 import { useState } from "react";
 import { updateTaskByIdUrl } from "../../../Utils/Urls/TaskUrl";
 import Swal from "sweetalert2";
+import useTask from "../../../Hooks/useTask";
 
 const UpdateTaskModal = ({ taskUpdateOpen, setTaskUpdateOpen, taskData }) => {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
+  const {refetchTasks} = useTask()
 
   const statusOption = [
     {
@@ -65,6 +67,7 @@ const UpdateTaskModal = ({ taskUpdateOpen, setTaskUpdateOpen, taskData }) => {
 
       setLoading(false);
       setTaskUpdateOpen(false);
+      refetchTasks()
     }
   };
 

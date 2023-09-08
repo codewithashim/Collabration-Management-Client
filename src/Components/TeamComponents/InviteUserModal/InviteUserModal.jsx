@@ -4,16 +4,20 @@ import useUsers from "../../../Hooks/useUsers";
 import { useState } from "react";
 import { inviteUserToTeam } from "../../../Utils/Urls/TeamUrls";
 import Swal from "sweetalert2";
+import useTeam from "../../../Hooks/useTeam";
 
-const InviteUserModal = ({ teamId, inviteUser, setInviteUser, teamData }) => {
+const InviteUserModal = ({ inviteUser, setInviteUser, teamData }) => {
   const { usersData } = useUsers();
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState([]);
+  const { refetch } = useTeam();
+
+  console.log(teamData, "teamId");
 
   const userOption = usersData?.map((user) => {
     return {
-      value: user._id,
-      label: user.name,
+      value: user?._id,
+      label: user?.name,
     };
   });
 
@@ -21,18 +25,27 @@ const InviteUserModal = ({ teamId, inviteUser, setInviteUser, teamData }) => {
     setUserId(value);
   };
 
+  console.log(userId[0], "userId");
+
+  const userIdNormalFormet = JSON.stringify(userId);
+
+  console.log(userIdNormalFormet, "userIdNormalFormet");
+
   const handelInviteUser = async () => {
     setLoading(true);
-    const res = await fetch(inviteUserToTeam(teamId), {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: userId,
-        teamId: teamId,
-      }),
-    });
+    const res = await fetch(
+      `https://collabration-server.vercel.app/api/v1/teams/invite/${teamData?._id}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: userId[0],
+          // teamId: teamData?._id,
+        }),
+      }
+    );
     const data = await res.json();
     if (!data) {
       setLoading(false);
@@ -57,7 +70,7 @@ const InviteUserModal = ({ teamId, inviteUser, setInviteUser, teamData }) => {
 
       setLoading(false);
       setInviteUser(false);
-
+      refetch();
     }
   };
 
@@ -73,8 +86,11 @@ const InviteUserModal = ({ teamId, inviteUser, setInviteUser, teamData }) => {
         footer={null}
       >
         <div className="flex flex-col gap-4">
-          <Input placeholder="Team Name" defaultValue={teamData?.name} />
-
+          <Input
+            placeholder="Team Name"
+            defaultValue={teamData?.name}
+            disabled
+          />
           <Select
             mode="tags"
             style={{
