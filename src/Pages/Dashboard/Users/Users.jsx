@@ -1,7 +1,6 @@
 import useUsers from "../../../Hooks/useUsers";
-import { useEffect, useState } from "react";
 import VirtualList from "rc-virtual-list";
-import { Avatar, List, message } from "antd";
+import { Avatar, List} from "antd";
 import { Link } from "react-router-dom";
 const ContainerHeight = 400;
 

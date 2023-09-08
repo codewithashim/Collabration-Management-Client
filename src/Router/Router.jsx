@@ -9,6 +9,7 @@ import Task from "../Pages/Dashboard/Task/Task/Task";
 import Users from "../Pages/Dashboard/Users/Users";
 import UserDetails from "../Components/UserComponents/UserDetails/UserDetails";
 import Team from "../Pages/Dashboard/Team/Team/Team";
+import TeamDetails from "../Components/TeamComponents/TeamDetails/TeamDetails";
 
 const routes = createBrowserRouter([
   {
@@ -52,6 +53,14 @@ const routes = createBrowserRouter([
             <Team />
           </PrivetRouter>
         ),
+      },
+      {
+        path: "/dashboard/team/:teamId",
+        element: (
+          <PrivetRouter>
+            <TeamDetails />
+          </PrivetRouter>
+        )
       },
       {
         path: "/dashboard/users",

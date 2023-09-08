@@ -4,7 +4,7 @@ import AddTaskModal from "../../../../Components/TaskComponents/AddTaskModal/Add
 const AddTask = () => {
   const [taskOpen, setTaskOpen] = useState(false);
   return (
-    <section className="w-[100%] mx-auto">
+    <section className="w-[90%] mx-auto">
       <div className="top-bar">
         <button className="common-btn" onClick={() => setTaskOpen(true)}>
           Add New Task
